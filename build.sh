@@ -51,19 +51,21 @@ while getopts ":b:n:f:p:d:" opt
 do
   case "${opt}" in
 	b)
-		branch_name = ${OPTARG}
+		branch_name=${OPTARG}
 		;;
 	n)
-		new_branch = ${OPTARG}
+		new_branch=${OPTARG}
 		;;
 	f)
-		compress_format = ${OPTARG}
+		compress_format=${OPTARG}
+		((debug_mode == "zip" || debug_mode == "tar")) || usage
 		;;
 	p)
-		artifact_path = ${OPTARG}
+		artifact_path=${OPTARG}
 		;;
 	d)
-		debug_mode = ${OPTARG}
+		debug_mode=${OPTARG}
+		((debug_mode == "true" || debug_mode == "false")) || usage
 		;;
 	*)
 		usage
@@ -78,7 +80,7 @@ done
 # first it checks if the user is in this branch. If user is in corrent branch, it will
 # execute the build command. If user is not in the correct branch, it will check out the
 #correct branch, then execute the build command.
-if [ "${branch_name}" == "main" || "${branch_name}" == "master" ];
+if [[ "${branch_name}" == "main" || "${branch_name}" == "master" ]];
 then
 	echo "WARNING!!!"
 	echo "Şu an master ve ya main branch'ini build ediyorsunuz !!!"
@@ -87,17 +89,18 @@ fi
 if [ "${branch_name}" == $(git rev-parse --abbrev-ref HEAD) ]; 
 then
 	echo "Build has started on branch: ${branch_name}"
-else
+elif [[ "${branch_name}" != $(git rev-parse --abbrev-ref HEAD) && ! -z "${branch_name}" ]];
+then
 	git checkout ${branch_name}
 	echo "Checked out to the branch: ${branch_name}"
 	echo "Build has started on branch: ${branch_name}"
-fi
+fi 
 
 
 
-#Here wr check if user did not provide an empty string for new brancn name.
+#Here we check if user did not provide an empty string for new brancn name.
 #If provided a string for name, it will create a new branch with the name provided. 
-if [ "${new_branch}" != "" ];
+if [ ! -z "${new_branch}" ];
 then
 	git checkout -b ${new_branch}
 fi
@@ -107,14 +110,15 @@ fi
 #Here in first statement of first if condition we check if user provided a zip compress format.
 #In second statement we check if user provided a valid artifact path. If not, it will create a zip 
 #archive file in the current directory as pwd command indicates.
-if ["${compress_mode}" == "zip" && "${artifact_path}" == ""];
+if [[ "$compress_mode" == "zip" && -z "$artifact_path" ]];
 then
-	echo "Compress mode: ${compress_mode} and artifact is created under: ${pwd}/"
+	dir=$(pwd);
+	echo "Compress mode: ${compress_mode} and artifact is created under: $dir/"
 	${BUILD_COMMAND}
 	zip -r ./${branch_name}.zip ./target/*.jar
 #Here we check if compress mode is provided correct as zip and artifact path is provided. If so,
 #it will create a zip file under the provided artifact_path.
-elif ["${compress_mode}" == "zip" && "${artifact_path}" != ""];
+elif [[ "$compress_mode" == "zip"&& ! -z "$artifact_path" ]];
 then
 	echo "Compress mode: ${compress_mode} and artifact path: ${artifact_path}"
 	${BUILD_COMMAND}
@@ -122,14 +126,14 @@ then
 #Here in first statement of first if condition we check if user provided a tar compress format.
 #In second statement we check if user provided a valid artifact path. If not, it will create a zip 
 #archive file in the current directory as pwd command indicates.
-elif ["${compress_mode}" == "tar" && "${artifact_path}" == ""];
+elif [[ "$compress_mode" == "tar" && -z "$artifact_path" ]];
 then
 	echo "Compress mode: ${compress_mode} and artifact path: ${pwd}"
 	${BUILD_COMMAND}
 	tar -czf ./${branch_name}.tar.gz ./target/*.jar
 #Here we check if compress mode is provided correct as tar and artifact path is provided. If so,
 #it will create a tar file under the provided artifact_path.
-elif ["${compress_mode}" == "tar" && "${artifact_path}" != ""];
+elif [[ "$compress_mode" == "tar" && ! -z "$artifact_path" ]];
 then
 	echo "Compress mode: ${compress_mode} and artifact path: ${artifact_path}"
 	${BUILD_COMMAND}
@@ -137,17 +141,18 @@ then
 #Here we check if user didn't provide either zip or tar compress mode. If so, ıt will show an
 #error message and exit the script.
 
-elif ["${compress_mode}" =! "tar" && "${compress_mode}" =! "zip"];
+elif [[ "${compress_mode}" != "tar" && "${compress_mode}" != "zip" && ! -z "${compress_mode}" ]];
+then
 	echo "Uygun bir sıkıştırma formatı girmediniz. Bu script sadece .tar ve .zip uzantılarını destekler"
 	exit 1
 fi
 
 #Here we take artifact_path and shows it to the user. Also, for double protection, again it is checked
 #if user provided a valid artifact_path. 
-if ["$(artifact_path)" != "" ];
-then
-	echo "Artifact path defined as: ${artifact_path}"
-fi
+#if [ "${artifact_path}"!="" ];
+#then
+#	echo "Artifact path defined as: ${artifact_path}"
+#fi
 
 
 #Here we check if debug mode is activated with the true value. If so, and -X flag is added to our BUILD_COMMAND
