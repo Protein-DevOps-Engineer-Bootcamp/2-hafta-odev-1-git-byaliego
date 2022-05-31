@@ -3,7 +3,7 @@
 #################################################################
 # Author: Ali Yigit Ogun										 |	
 # Contact: yigitogun@gmail.com									 |
-# Date: 01.05.2020												 |
+# Date: 01.06.2022												 |
 # Version: 1.0				  									 |
 # Description: Script which take a build for the project		 |
 # Usage: $bash build.sh											 |
