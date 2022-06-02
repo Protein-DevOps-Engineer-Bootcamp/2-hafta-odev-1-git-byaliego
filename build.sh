@@ -22,8 +22,8 @@ HELP_COMMAND="
 	Usage:
     -b  <branch_name>     Branch name
     -n  <new_branch>      Create new branch
-    -f  <zip|tar>         Compress format
-    -p  <artifact_path>   Copy artifact to spesific path
+    -f  <zip|tar>         Compress format should be either zip or tar
+    -p  <artifact_path>   Copy artifact to spesific path, please providee full path
     -d  <debug_mode>      Enable debug mode(expect true or false)
 "
 #---------END OF VARIABLE DECLARATION----------#
@@ -57,8 +57,8 @@ do
 		new_branch=${OPTARG}
 		;;
 	f)
-		compress_format=${OPTARG}
-		((debug_mode == "zip" || debug_mode == "tar")) || usage
+		compress_mode=${OPTARG}
+		#((debug_mode == "zip" || debug_mode == "tar")) || usage
 		;;
 	p)
 		artifact_path=${OPTARG}
@@ -110,34 +110,38 @@ fi
 #Here in first statement of first if condition we check if user provided a zip compress format.
 #In second statement we check if user provided a valid artifact path. If not, it will create a zip 
 #archive file in the current directory as pwd command indicates.
-if [[ "$compress_mode" == "zip" && -z "$artifact_path" ]];
+if [[ "${compress_mode}" == "zip" && -z "${artifact_path}" ]];
 then
-	dir=$(pwd);
+	dir=$(pwd)
+	current_branch=$(git rev-parse --abbrev-ref HEAD)
 	echo "Compress mode: ${compress_mode} and artifact is created under: $dir/"
 	${BUILD_COMMAND}
-	zip -r ./${branch_name}.zip ./target/*.jar
+	zip -r ./${current_branch}.zip ./target/*.jar
 #Here we check if compress mode is provided correct as zip and artifact path is provided. If so,
 #it will create a zip file under the provided artifact_path.
-elif [[ "$compress_mode" == "zip"&& ! -z "$artifact_path" ]];
+elif [[ "${compress_mode}" == "zip" && ! -z "${artifact_path}" ]];
 then
 	echo "Compress mode: ${compress_mode} and artifact path: ${artifact_path}"
+	current_branch=$(git rev-parse --abbrev-ref HEAD)
 	${BUILD_COMMAND}
-	zip -r ./${artifact_path}/${branch_name}.zip ./target/*.jar
+	zip -r ${artifact_path}${current_branch}.zip ./target/*.jar
 #Here in first statement of first if condition we check if user provided a tar compress format.
 #In second statement we check if user provided a valid artifact path. If not, it will create a zip 
 #archive file in the current directory as pwd command indicates.
 elif [[ "$compress_mode" == "tar" && -z "$artifact_path" ]];
 then
 	echo "Compress mode: ${compress_mode} and artifact path: ${pwd}"
+	current_branch=$(git rev-parse --abbrev-ref HEAD)
 	${BUILD_COMMAND}
-	tar -czf ./${branch_name}.tar.gz ./target/*.jar
+	tar -czf ./${current_branch}.tar.gz ./target/*.jar
 #Here we check if compress mode is provided correct as tar and artifact path is provided. If so,
 #it will create a tar file under the provided artifact_path.
-elif [[ "$compress_mode" == "tar" && ! -z "$artifact_path" ]];
+elif [[ "${compress_mode}" == "tar" && ! -z "${artifact_path}" ]];
 then
 	echo "Compress mode: ${compress_mode} and artifact path: ${artifact_path}"
+	current_branch=$(git rev-parse --abbrev-ref HEAD)
 	${BUILD_COMMAND}
-	tar -czf ./${artifact_path}/${branch_name}.tar.gz ./target/*.jar
+	tar -czf ${artifact_path}${branch_name}.tar.gz ./target/*.jar
 #Here we check if user didn't provide either zip or tar compress mode. If so, ıt will show an
 #error message and exit the script.
 
