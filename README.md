@@ -9,8 +9,10 @@ With `build.sh` script you can take build of your code easy and fast.
 <br />
 
 1. [About](#aciklama)
-2. [Note](#not)
-3. [Usage](#usage)
+    - [Technologies](#tech)
+    - [Scope](#scope)
+3. [Note](#not)
+4. [Usage](#usage)
     - [Synopsis](#synopsis)
     - [Examples](#examples)
 
@@ -21,6 +23,11 @@ With `build.sh` script you can take build of your code easy and fast.
 <br />
 
 ### About: [![](./docs/img/pin.svg)](#aciklama)
+
+#### Technologies [](#tech)
+Linux Git Bash Java Maven
+
+#### Scope [](#scope)
 
 Here in this project, we have a java code and arbitrarily imagine that our developer team needs a script to take the build of a particular branch with a script. 
 The requirements of he team as shown below:
@@ -48,10 +55,10 @@ The requirements of he team as shown below:
 ### Usage: [![](./docs/img/pin.svg)](#usage)
 The script file should be added to .bashrc file in order to use the script ,as requested in project, as a bash command. 
 
-#### _Synopsis_ (#synopsis)
+#### _Synopsis_ [](#synopsis)
 `build.sh         [OPTION...]`
 
-#### _Examples_ (#examples)
+#### _Examples_ [](#examples)
     
 >**-b** = _BRANCH_NAME_  </br>
 >&emsp;&ensp;    Taking the build for the given BRANCH_NAME  </br>
