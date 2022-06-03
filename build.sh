@@ -25,8 +25,9 @@ HELP_COMMAND="
     -f  <zip|tar>         Compress format should be either zip or tar
     -p  <artifact_path>   Copy artifact to spesific path, please providee full path
     -d  <debug_mode>      Enable debug mode(expect true or false)
-"
+			"
 #---------END OF VARIABLE DECLARATION----------#
+
 
 
 
@@ -39,6 +40,9 @@ usage(){
 	exit 1
 }
 #-----------END OF FUNCTION DECLARATION----------#
+
+
+
 
 
 #----------------START OF MAIN-----------------#
@@ -82,7 +86,7 @@ done
 #correct branch, then execute the build command.
 if [[ "${branch_name}" == "main" || "${branch_name}" == "master" ]];
 then
-	echo "WARNING!!!"
+	echo -e "\e[1;31mWARNING!!!\033[0m"
 	echo "Şu an master ve ya main branch'ini build ediyorsunuz !!!"
 fi 
 
@@ -91,9 +95,17 @@ then
 	echo "Build has started on branch: ${branch_name}"
 elif [[ "${branch_name}" != $(git rev-parse --abbrev-ref HEAD) && ! -z "${branch_name}" ]];
 then
-	git checkout ${branch_name}
-	echo "Checked out to the branch: ${branch_name}"
-	echo "Build has started on branch: ${branch_name}"
+		echo "Checking out branch: ${branch_name}"
+		git checkout ${branch_name}
+		
+	if [ $? -eq 0 ];
+	then
+		echo "Build has started on branch: ${branch_name}"
+	else
+		echo -e "\e[1;31mThe branch of ${branch_name} does not exist."
+		echo "Please check the branch name and try again with -n NEW_BRANCH option."
+		exit 1
+	fi
 fi 
 
 
