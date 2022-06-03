@@ -25,7 +25,13 @@ With `build.sh` script you can take build of your code easy and fast.
 ### About: [![](./docs/img/pin.svg)](#aciklama)
 
 #### Technologies [](#tech)
-Linux Git Bash Java Maven
+<span>
+<img src="https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white" alt="drawing" width="100" />
+<img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="drawing" width="100"/>
+<img src="https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white" alt="drawing" width="100"/>
+<img src="https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white" alt="drawing" width="100"/>
+<img src="https://img.shields.io/badge/shell_script-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white" alt="drawing" width="100"/>
+</span>
 
 #### Scope [](#scope)
 
