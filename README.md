@@ -8,9 +8,11 @@ With `build.sh` script you can take build of your code easy and fast.
 # Table of contents[![](./docs/img/pin.svg)](#table-of-contents)
 <br />
 
-1. [Aciklama](#aciklama)
+1. [About](#aciklama)
 2. [Note](#not)
 3. [Usage](#usage)
+    - [Synopsis](#synopsis)
+    - [Examples](#examples)
 
 <br />
 
@@ -46,10 +48,10 @@ The requirements of he team as shown below:
 ### Usage: [![](./docs/img/pin.svg)](#usage)
 The script file should be added to .bashrc file in order to use the script ,as requested in project, as a bash command. 
 
-#### _Synopsis_
+#### _Synopsis_ (#synopsis)
 `build.sh         [OPTION...]`
 
-#### _Examples_
+#### _Examples_ (#examples)
     
 >**-b** = _BRANCH_NAME_  </br>
 >&emsp;&ensp;    Taking the build for the given BRANCH_NAME  </br>
