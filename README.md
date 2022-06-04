@@ -86,7 +86,6 @@ The script file should be added to .bashrc file in order to use the script ,as r
 >&emsp;&ensp;      give "false". As default DEBUG_MODE is set to "false.  </br>
 ></br>
 ></br>
-></br>
 
 
 
